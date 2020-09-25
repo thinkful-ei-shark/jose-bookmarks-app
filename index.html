@@ -14,41 +14,14 @@
 /// This will appear when the user first arrives to the page ///
 /////////////////////////////////////////////////////////////-->
 
-    <div class="container">
-        <h1>Bookmarks List</h1>
-        <h2>Welcome fellow bookmarker!</h2>
-        <p class='description'>
-            This app will enable you to store your favorite
-            websites and organize by a rating (1 - 5) form
-            most favorite to "I can't believe I was into this band".
-        </p>
-        <p>Have fun and happy bookmarking 📚</p>
-        <form id="js-bookmark-list-form">
-            <label for="bookmark-title-entry">Title:</label>
-            <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry" placeholder="e.g., marinara recipe"><br>
-            <label for="bookmark-link-entry">URL:</label>
-            <input type="text" name="bookmark-link-entry" class="js-bookmark-link-entry" placeholder="www.sauceboss.com"><br>
-            <label for="bookmark-desc-entry">Description:</label>
-            <input type="text" name="bookmark-desc-entry" class="js-bookmark-desc-entry" placeholder="better than momma's"><br>
-            <label for="rating">Rating:</label>
-            <input type="text" name="bookmark-rating-entry" class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5"><br>
-            <label for="cars">Choose a rating:</label>
-            <select name="ratings" id="ratings">
-                  <option value="one">1 Star</option>
-                  <option value="two">2 Stars</option>
-                  <option value="three">3 Star</option>
-                  <option value="four">4 Stars</option>
-                  <option value="five">5 Stars</option>
-            </select><br>
-            <button type="submit">Save</button>
-        </form>
+    <div class="container js-container"></div>
+        
+    
 
 <!--///////////////////////////////////////////////////////////////////
 /// This is where the page will render the bookmarks list template ///
 //////////////////////////////////////////////////////////////////-->
 
-        <ul class="bookmark-list js-bookmark-list"></ul>
-    </div>
     <!-- vendor scripts -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
