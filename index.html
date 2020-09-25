@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Shopping List</title>
+    <title>Bookmarks List</title>
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -23,17 +23,15 @@
             <input type="text" name="bookmark-link-entry" class="js-bookmark-link-entry" placeholder="www.sauceboss.com"><br>
             <label for="bookmark-desc-entry">Description:</label>
             <input type="text" name="bookmark-desc-entry" class="js-bookmark-desc-entry" placeholder="better than momma's"><br>
-            <label for="rating">Rating</label>
-                <input type="checkbox" id="rating" name="rating" value="one">
-                <input type="checkbox" id="rating" name="rating" value="two">
-                <input type="checkbox" id="rating" name="rating" value="three">
-                <input type="checkbox" id="rating" name="rating" value="four"><br>
+            <label for="rating">Rating:</label>
+            <input type="text" name="bookmark-rating-entry" class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5"><br>
             <label for="cars">Choose a rating:</label>
-            <select name="cars" id="cars">
-                  <option value="volvo">1 Star</option>
-                  <option value="saab">2 Stars</option>
-                  <option value="opel">3 Star</option>
-                  <option value="audi">4 Stars</option>
+            <select name="ratings" id="ratings">
+                  <option value="one">1 Star</option>
+                  <option value="two">2 Stars</option>
+                  <option value="three">3 Star</option>
+                  <option value="four">4 Stars</option>
+                  <option value="five">5 Stars</option>
             </select><br>
             <button type="submit">Save</button>
         </form>
@@ -45,7 +43,7 @@
         <ul class="shopping-list js-shopping-list">
 
             <li class='js-item-element' data-item-id='${item.id}'>
-                Title
+                <span class='shopping-item shopping-item__checked'>Bookmark 1</span>
                 <div class='bookmark-item__collapsed js-item-expanded'>
                     <p>Description:</p>
                     <p>Full description of bookmark.</p>
@@ -65,7 +63,7 @@
             </li>
             
             <li class='js-item-element' data-item-id='${item.id}'>
-                Title
+                <span class='shopping-item shopping-item__checked'>Bookmark 2</span>
                 <div class='js-item-expanded'>
                     <p>Description:</p>
                     <p>Full description of bookmark.</p>
