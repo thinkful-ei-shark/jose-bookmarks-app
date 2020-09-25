@@ -22,41 +22,9 @@ const store = {
 
 //.:*~*:._.:*~*:._ STEP 1.C. _.:*~*:._.:*~*:.//
 
-// Function that returns HTML based on a switch case
+// Function that will give users access to create their own bookmark
 
-const generateStartTemplate = function() {
-    return `
-    <h1>Bookmarks List</h1>
-        <h2>Welcome fellow bookmarker!</h2>
-        <p class='description'>
-            This app will enable you to store your favorite
-            websites and organize by a rating (1 - 5) form
-            most favorite to "I can't believe I was into this band".
-        </p>
-        <p>Have fun and happy bookmarking 📚</p>
-        <form id='bookmark start js-bookmark-start'>
-            <button type="submit" >New Bookmark +</button>
-            <label for="bookmarks">Sort by:</label>
-            <select name="ratings" id="ratings" required>
-                <option value="one">1 Star</option>
-                <option value="two">2 Stars</option>
-                <option value="three">3 Star</option>
-                <option value="four">4 Stars</option>
-                <option value="five">5 Stars</option>
-            </select>
-        </form>
-        <ul class="bookmark-list js-bookmark-list"></ul>
-    `;
-}
-
-
-/////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-
-// Function that will give access to users to create their own bookmark entry
-
-function newBookmarkEntryTemplate() {
+const newBookmarkEntryForm = function() {
     return `  
     <form id="js-bookmark-list-form">
         <label for="bookmark-title-entry">Title:</label>
@@ -72,10 +40,40 @@ function newBookmarkEntryTemplate() {
   `;
   }
 
+// Function that returns HTML based on whether the user wants to
+// create a new bookmark entry or look at the list of their already
+// created bookmarks
 
+const generateStartTemplate = function() {
+    let mainNav = `
+        <form id='js-bookmark-start' class='bookmark-start'>
+            <button type="submit" >New Bookmark +</button>
+            <label for="bookmarks">Sort by:</label>
+            <select name="ratings" id="ratings" required>
+                <option value="one">1 Star</option>
+                <option value="two">2 Stars</option>
+                <option value="three">3 Star</option>
+                <option value="four">4 Stars</option>
+                <option value="five">5 Stars</option>
+            </select>
+        </form>`;
 
-
-
+    if (store.adding) {
+        mainNav = newBookmarkEntryForm();
+    }
+    return `
+        <h1>Bookmarks List</h1>
+        <h2>Welcome fellow bookmarker!</h2>
+        <p class='description'>
+            This app will enable you to store your favorite
+            websites and organize by a rating (1 - 5) form
+            most favorite to "I can't believe I was into this band".
+        </p>
+        <p>Have fun and happy bookmarking 📚</p>
+        ${mainNav}
+        <ul class="bookmark-list js-bookmark-list"></ul>
+    `;
+}
 
   // Function that generates newly created bookmark
 
@@ -84,7 +82,7 @@ function newBookmarkEntryTemplate() {
         <div class='js-item-expanded'>
             <p class='desc-title description'>Description:</p>
             <p class='description'>${item.desc}</p>
-            <p>Visit site: <a href="${item.url}">${item.url}</a></p>
+            <button class='js-visit-site'>Visit site</button>
         </div>
         `;
     if (!item.expanded) {
@@ -95,7 +93,7 @@ function newBookmarkEntryTemplate() {
   
     return `
         <li class='js-item-element' data-item-id='${item.id}'>
-            <span class='bookmark-item'>${item.name}</span>
+            <span class='bookmark-item'>${item.title}</span>
             ${bookmarkDescription}
             <div class='bookmark-item-controls'>
                 <button class='bookmark-item-toggle js-item-toggle'>
@@ -122,7 +120,7 @@ function newBookmarkEntryTemplate() {
   //.:*~*:._.:*~*:._ STEP 1.A. _.:*~*:._.:*~*:.//
 
   const render = function () {
-      console.log('rendering')
+    //   console.log('rendering')
       let pageLoad = generateStartTemplate();
       // Set up a copy of the store's items in a local 
       // variable 'items' that we will reassign to a new
@@ -149,21 +147,56 @@ function newBookmarkEntryTemplate() {
         $('.js-container').html(pageLoad).append(bookmarkListItemsString);
     };
     
-    
-  const addItemToShoppingList = function (itemName) {
+
+/////////////////////////////////////////////////////////
+/////////////////// TRIGGER FUNCTIONS ///////////////////
+///////////////////////////////////////////////////////// 
+
+  //.:*~*:._.:*~*:._ STEP 2.B. _.:*~*:._.:*~*:.//
+
+  const addItemToBookmarkList = function (itemName) {
     store.items.push({ id: cuid(), name: itemName, checked: false });
   };
+
+  //.:*~*:._.:*~*:._ STEP 2.B. _.:*~*:._.:*~*:.//
+
+//   const recordUserInput = function () {
+//       ...
+// };
   
-  const handleNewItemSubmit = function () {
-    $('#js-shopping-list-form').submit(function (event) {
+  //.:*~*:._.:*~*:._ STEP 2.A. _.:*~*:._.:*~*:.//
+
+  const handleOpenBookMarkForm = function () {
+    $('.js-container').on('submit', '#js-bookmark-start', function (event) {
       event.preventDefault();
-      const newItemName = $('.js-shopping-list-entry').val();
-      $('.js-shopping-list-entry').val('');
-      addItemToShoppingList(newItemName);
+      // this function will trigger the creation of a new "create bookmark"
+      // form "newBookmarkEntryTemplate()"
+      console.log('take me to your leader...');
+      store.adding = true;
       render();
+
+      // on a separate function, the user input will be captured
+
+      // and on a separate function it will be added to our store array
     });
   };
   
+
+  const handleNewItemSubmit = function () {
+    $('.js-container').on('submit', '#js-bookmark-list-form', function (event) {
+      event.preventDefault();
+
+    //   const newItemName = $('.js-shopping-list-entry').val();
+    //   $('.js-shopping-list-entry').val('');
+    //   addItemToShoppingList(newItemName);
+    
+    // Hides form after we've taken data from the form, called the api and added it to the store 
+    store.adding = false;
+    render();
+    });
+  };
+
+
   const toggleCheckedForListItem = function (id) {
     const foundItem = store.items.find(item => item.id === id);
     foundItem.checked = !foundItem.checked;
@@ -251,6 +284,7 @@ function newBookmarkEntryTemplate() {
    */
   const handleBookmarkList = function () {
     render();
+    handleOpenBookMarkForm();
     handleNewItemSubmit();
     handleItemCheckClicked();
     handleDeleteItemClicked();
