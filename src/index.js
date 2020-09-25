@@ -1,8 +1,8 @@
 const store = {
     items: [
-        { id: cuid(), name: 'Soccer News', url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', rating: 4, expanded: false, editable: false },
-        { id: cuid(), name: 'Soccer News', url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', rating: 4, expanded: false, editable: false },
-        { id: cuid(), name: 'Soccer News', url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', rating: 4, expanded: false, editable: false }
+        { id: cuid(), name: 'Soccer News', url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', rating: 4, expanded: true, editable: false },
+        { id: cuid(), name: 'Meatball Recipe', url: 'https://www.thekitchn.com/how-to-make-meatballs-cooking-lessons-from-the-kitchn-108048', desc: 'Easiest meatball recipe', rating: 3, expanded: true, editable: false },
+        { id: cuid(), name: 'Butthole Surfers - Who Was in My Room Last Night', url: 'https://www.youtube.com/watch?v=CNAkbbKycCM', desc: 'Pretty good song', rating: 2, expanded: false, editable: false }
     ],
     hideExpandedItems: false,
     hideEditOptions: false
@@ -16,10 +16,10 @@ const store = {
 
   const generateItemElement = function (item) {
     let bookmarkDescription = `
-        <div class='bookmark-item__collapsed js-item-expanded'>
+        <div class='js-item-expanded'>
             <p class='desc-title description'>Description:</p>
-            <p class='description'>${items.desc}</p>
-            <p>Visit site: <a href="${items.url}">${items.url}</a></p>
+            <p class='description'>${item.desc}</p>
+            <p>Visit site: <a href="${item.url}">${item.url}</a></p>
         </div>
         `;
     if (!item.expanded) {
@@ -30,7 +30,7 @@ const store = {
   
     return `
         <li class='js-item-element' data-item-id='${item.id}'>
-            <span class='bookmark-item bookmark-item__checked'>Bookmark 1</span>
+            <span class='bookmark-item'>${item.name}</span>
             ${bookmarkDescription}
             <div class='bookmark-item-controls'>
                 <button class='bookmark-item-toggle js-item-toggle'>
@@ -49,14 +49,15 @@ const store = {
   
   // STEP 1.A.
 
-  const generateBookmarkItemsString = function (shoppingList) {
-    const items = shoppingList.map((item) => generateItemElement(item));
+  const generateBookmarkItemsString = function (bookmarkList) {
+    const items = bookmarkList.map((item) => generateItemElement(item));
     return items.join('');
   };
   
   // STEP 1
 
   const render = function () {
+      console.log('rendering')
       // Set up a copy of the store's items in a local 
       // variable 'items' that we will reassign to a new
       // version if any filtering of the list occurs.
@@ -65,19 +66,20 @@ const store = {
       // then we want to reassign filteredItems to a 
       // version where ONLY items with a "checked" 
       // property of false are included.
-      if (store.hideCheckedItems) {
-          items = items.filter(item => !item.checked);
-        }
+
+    //   if (store.hideCheckedItems) {
+    //       items = items.filter(item => !item.checked);
+    //     }
         
         /**
          * At this point, all filtering work has been 
          * done (or not done, if that's the current settings), 
          * so we send our 'items' into our HTML generation function
          */
-        const shoppingListItemsString = generateBookmarkItemsString(items);
+        const bookmarkListItemsString = generateBookmarkItemsString(items);
         
         // insert that HTML into the DOM
-        $('.js-shopping-list').html(shoppingListItemsString);
+        $('.js-bookmark-list').html(bookmarkListItemsString);
     };
     
     
@@ -189,4 +191,4 @@ const store = {
   };
   
   // when the page loads, call `handleBookmarkList`
-  $(handleBookarkList);
+  $(handleBookmarkList);
