@@ -16,6 +16,13 @@
 
     <div class="container">
         <h1>Bookmarks List</h1>
+        <h2>Welcome fellow bookmarker!</h2>
+        <p class='description'>
+            This app will enable you to store your favorite
+            websites and organize by a rating (1 - 5) form
+            most favorite to "I can't believe I was into this band".
+        </p>
+        <p>Have fun and happy bookmarking 📚</p>
         <form id="js-bookmark-list-form">
             <label for="bookmark-title-entry">Title:</label>
             <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry" placeholder="e.g., marinara recipe"><br>
@@ -40,54 +47,12 @@
 /// This is where the page will render the bookmarks list template ///
 //////////////////////////////////////////////////////////////////-->
 
-        <ul class="shopping-list js-shopping-list">
-
-            <li class='js-item-element' data-item-id='${item.id}'>
-                <span class='shopping-item shopping-item__checked'>Bookmark 1</span>
-                <div class='bookmark-item__collapsed js-item-expanded'>
-                    <p>Description:</p>
-                    <p>Full description of bookmark.</p>
-                    <p>Visit site: <a href="#">www.website.com</a></p>
-                </div>
-                <div class='shopping-item-controls'>
-                    <button class='shopping-item-toggle js-item-toggle'>
-                        <span class='button-label'>expand/compress</span>
-                    </button>
-                    <button class='shopping-item-edit js-item-edit'>
-                        <span class='button-label'>edit entry</span>
-                    </button>
-                    <button class='shopping-item-delete js-item-delete'>
-                        <span class='button-label'>delete</span>
-                    </button>
-                </div>
-            </li>
-            
-            <li class='js-item-element' data-item-id='${item.id}'>
-                <span class='shopping-item shopping-item__checked'>Bookmark 2</span>
-                <div class='js-item-expanded'>
-                    <p>Description:</p>
-                    <p>Full description of bookmark.</p>
-                    <p>Visit site: <a href="#">www.website.com</a></p>
-                </div>
-                <div class='shopping-item-controls'>
-                    <button class='shopping-item-toggle js-item-toggle'>
-                        <span class='button-label'>expand/compress</span>
-                    </button>
-                    <button class='shopping-item-edit js-item-edit'>
-                        <span class='button-label'>edit entry</span>
-                    </button>
-                    <button class='shopping-item-delete js-item-delete'>
-                        <span class='button-label'>delete</span>
-                    </button>
-                </div>
-            </li>
-
-        </ul>
+        <ul class="bookmark-list js-shopping-list"></ul>
     </div>
     <!-- vendor scripts -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="./src/index.js"></script>
 </body>
 
 </html>
