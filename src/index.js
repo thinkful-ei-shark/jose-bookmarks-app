@@ -28,13 +28,13 @@ const newBookmarkEntryForm = function() {
     return `  
     <form id="js-bookmark-list-form">
         <label for="bookmark-title-entry">Title:</label>
-        <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry" placeholder="e.g., marinara recipe"><br>
-        <label for="bookmark-link-entry">URL:</label>
-        <input type="text" name="bookmark-link-entry" class="js-bookmark-link-entry" placeholder="www.sauceboss.com"><br>
+        <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry" placeholder="e.g., marinara recipe" required><br>
+        <label for="bookmark-url-entry">URL:</label>
+        <input type="text" name="bookmark-url-entry" class="js-bookmark-url-entry" placeholder="www.sauceboss.com" required><br>
         <label for="bookmark-desc-entry">Description:</label>
-        <input type="text" name="bookmark-desc-entry" class="js-bookmark-desc-entry" placeholder="better than momma's"><br>
+        <input type="text" name="bookmark-desc-entry" class="js-bookmark-desc-entry" placeholder="better than momma's" required><br>
         <label for="rating">Rating:</label>
-        <input type="text" name="bookmark-rating-entry" class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5"><br>
+        <input type="text" name="bookmark-rating-entry" class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5" required><br>
         <button type="submit">Add +</button>
     </form>
   `;
@@ -80,9 +80,15 @@ const generateStartTemplate = function() {
   const generateItemElement = function (item) {
     let bookmarkDescription = `
         <div class='js-item-expanded'>
+            <button class='js-visit-site'>Visit site</button>
             <p class='desc-title description'>Description:</p>
             <p class='description'>${item.desc}</p>
-            <button class='js-visit-site'>Visit site</button>
+            <button class='bookmark-item-edit js-item-edit'>
+                <span class='button-label'>edit entry</span>
+            </button>
+            <button class='bookmark-item-delete js-item-delete'>
+                <span class='button-label'>delete</span>
+            </button>
         </div>
         `;
     if (!item.expanded) {
@@ -94,17 +100,10 @@ const generateStartTemplate = function() {
     return `
         <li class='js-item-element' data-item-id='${item.id}'>
             <span class='bookmark-item'>${item.title}</span>
+            <span class='bookmark-rating'>Rating: ${item.rating}</span>
             ${bookmarkDescription}
             <div class='bookmark-item-controls'>
-                <button class='bookmark-item-toggle js-item-toggle'>
-                    <span class='button-label'>expand/compress</span>
-                </button>
-                 <button class='bookmark-item-edit js-item-edit'>
-                    <span class='button-label'>edit entry</span>
-                </button>
-                <button class='bookmark-item-delete js-item-delete'>
-                    <span class='button-label'>delete</span>
-                </button>
+                <button class='bookmark-item-toggle js-item-toggle'>view full entry</button>
             </div>
         </li>`;
   };
@@ -152,58 +151,64 @@ const generateStartTemplate = function() {
 /////////////////// TRIGGER FUNCTIONS ///////////////////
 ///////////////////////////////////////////////////////// 
 
-  //.:*~*:._.:*~*:._ STEP 2.B. _.:*~*:._.:*~*:.//
+  //.:*~*:._.:*~*:._ STEP 2.C. _.:*~*:._.:*~*:.//
 
-  const addItemToBookmarkList = function (itemName) {
-    store.items.push({ id: cuid(), name: itemName, checked: false });
+  const addItemToBookmarkList = function (newItemTitle, newURL, newDesc, newRating) {
+    store.bookmarks.push({ id: cuid(), title: newItemTitle, rating: newRating, url: newURL, desc: newDesc, expanded: false, editable: false });
   };
 
   //.:*~*:._.:*~*:._ STEP 2.B. _.:*~*:._.:*~*:.//
 
-//   const recordUserInput = function () {
-//       ...
-// };
-  
-  //.:*~*:._.:*~*:._ STEP 2.A. _.:*~*:._.:*~*:.//
+    const handleNewItemSubmit = function () {
+        $('.js-container').on('submit', '#js-bookmark-list-form', function (event) {
+            event.preventDefault();
+            const newItemTitle = $('.js-bookmark-title-entry').val();
+            const newURL = $('.js-bookmark-url-entry').val();
+            const newDesc = $('.js-bookmark-desc-entry').val();
+            const newRating = $('.js-bookmark-rating-entry').val();
+            $('.js-shopping-list-entry').val('');
+            // Before the next function runs, there's needs to be a call to the API
+            //  - the entry must be verified
+            //  - converted from json into a string
+            addItemToBookmarkList(newItemTitle, newURL, newDesc, newRating);
+            //Hides form after we've taken data from the form, called the api and added it to the store 
+            store.adding = false;
+            render();
+        }); 
+    };
+
+    //.:*~*:._.:*~*:._ STEP 2.A. _.:*~*:._.:*~*:.//
+    
+    // These functions lead the user to a new entry form
+    // and obtain the user input information
 
   const handleOpenBookMarkForm = function () {
     $('.js-container').on('submit', '#js-bookmark-start', function (event) {
       event.preventDefault();
       // this function will trigger the creation of a new "create bookmark"
       // form "newBookmarkEntryTemplate()"
-      console.log('take me to your leader...');
+    //   console.log('take me to your leader...');
       store.adding = true;
       render();
-
-      // on a separate function, the user input will be captured
-
-      // and on a separate function it will be added to our store array
-    });
-  };
-  
-
-  const handleNewItemSubmit = function () {
-    $('.js-container').on('submit', '#js-bookmark-list-form', function (event) {
-      event.preventDefault();
-
-    //   const newItemName = $('.js-shopping-list-entry').val();
-    //   $('.js-shopping-list-entry').val('');
-    //   addItemToShoppingList(newItemName);
-    
-    // Hides form after we've taken data from the form, called the api and added it to the store 
-    store.adding = false;
-    render();
     });
   };
 
+  //.:*~*:._.:*~*:._ STEP 3.B. _.:*~*:._.:*~*:.//
+  // This function will find the ID of the current list item
+  // and it will alternate its expanded status
 
   const toggleCheckedForListItem = function (id) {
-    const foundItem = store.items.find(item => item.id === id);
-    foundItem.checked = !foundItem.checked;
+    const foundItem = store.bookmarks.find(item => item.id === id);
+    foundItem.expanded = !foundItem.expanded;
   };
   
-  const handleItemCheckClicked = function () {
-    $('.js-shopping-list').on('click', '.js-item-toggle', event => {
+    //.:*~*:._.:*~*:._ STEP 3.A. _.:*~*:._.:*~*:.//
+
+    // These functions expanded and collapse the full view
+    // of the bookmark list item
+
+  const handleExpandedViewToggle = function () {
+    $('.js-container').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
       toggleCheckedForListItem(id);
       render();
@@ -286,7 +291,8 @@ const generateStartTemplate = function() {
     render();
     handleOpenBookMarkForm();
     handleNewItemSubmit();
-    handleItemCheckClicked();
+    handleExpandedViewToggle();
+    // handleItemCheckClicked();
     handleDeleteItemClicked();
     handleToggleFilterClick();
   };
