@@ -29,8 +29,13 @@
 
   }
 
-  .container li .expanded-button {
-    margin-top: 80px;
+  .container li .description {
+    background-color: gainsboro;
+    padding: 10px; 
+  }
+
+  .container li .bookmark-title {
+    padding-right: 120px;
   }
 
   .container .bookmark-item {

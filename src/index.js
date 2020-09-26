@@ -4,9 +4,9 @@
 
 const store = {
     bookmarks: [
-        { id: cuid(), title: 'Soccer News', rating: 3, url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', expanded: true, editable: false },
-        { id: cuid(), title: 'Meatball Recipe', rating: 5, url: 'https://www.thekitchn.com/how-to-make-meatballs-cooking-lessons-from-the-kitchn-108048', desc: 'Easiest meatball recipe', expanded: true, editable: false },
-        { id: cuid(), title: 'Avocado Oil', rating: 4, url: 'https://www.healthline.com/nutrition/9-avocado-oil-benefits', desc: 'Health Benefits of Avocado Oil', expanded: true, editable: false }
+        { id: cuid(), title: 'Soccer News', rating: 3, url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', expanded: false },
+        { id: cuid(), title: 'Meatball Recipe', rating: 5, url: 'https://www.thekitchn.com/how-to-make-meatballs-cooking-lessons-from-the-kitchn-108048', desc: 'Easiest meatball recipe', expanded: true },
+        { id: cuid(), title: 'Avocado Oil', rating: 4, url: 'https://www.healthline.com/nutrition/9-avocado-oil-benefits', desc: 'Health Benefits of Avocado Oil', expanded: true }
     ],
     hideEditOptions: false,
     adding: false,
@@ -29,11 +29,11 @@ const newBookmarkEntryForm = function() {
         <label for="bookmark-title-entry">Title:</label>
         <input type="text" name="bookmark-title-entry" class="js-bookmark-title-entry" placeholder="e.g., marinara recipe" required><br>
         <label for="bookmark-url-entry">URL:</label>
-        <input type="text" name="bookmark-url-entry" class="js-bookmark-url-entry" placeholder="www.sauceboss.com" required><br>
+        <input type="url" name="bookmark-url-entry" class="js-bookmark-url-entry" placeholder="www.sauceboss.com" required><br>
         <label for="bookmark-desc-entry">Description:</label>
         <input type="text" name="bookmark-desc-entry" class="js-bookmark-desc-entry" placeholder="better than momma's" required><br>
         <label for="rating">Rating:</label>
-        <input type="text" name="bookmark-rating-entry" class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5" required><br>
+        <input type="number" name="bookmark-rating-entry" class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5" required><br>
         <button type="submit">Add +</button>
     </form>
   `;
@@ -78,11 +78,10 @@ const generateStartTemplate = function() {
 
   const generateItemElement = function (item) {
     let bookmarkDescription = `
-        <div class='js-item-expanded'>
+        <div class='description js-item-expanded'>
             <button class='expand-button js-visit-site'>Visit site</button>
             <p class='desc-title description'>Description:</p>
             <p class='description'>${item.desc}</p>
-            <button class='bookmark-item-edit js-item-edit'>edit entry</button>
             <button class='bookmark-item-delete js-item-delete'>delete</button>
         </div>
         `;
@@ -268,10 +267,16 @@ const generateStartTemplate = function() {
    * or equal to the rating value on the dropdown menu
    */
   const dropdownSelectionFilter = function (currentRating) {
+    // The state of the page when the user first loads it
+    let pageLoad = generateStartTemplate();
+    // Extracting from the store the bookmarks that have a rating equal to or greater
+    // than the currentRating
     const ratingGroup = [];
-    store.bookmarks.map(rate => 
-        (rate.rating >= currentRating) ? ratingGroup.push(rate) : null)
-    console.log(ratingGroup);
+    store.bookmarks.map(rate => (rate.rating >= currentRating) ? ratingGroup.push(rate) : null)
+    // Display the filtered bookmarks to the DOM
+    let bookmarkListItemsString = generateBookmarkItemsString(ratingGroup);
+    // insert that HTML into the DOM
+    $('.js-container').html(pageLoad).append(bookmarkListItemsString);
   }
     
   
@@ -282,10 +287,15 @@ const generateStartTemplate = function() {
    * and only displays the items that have a minimum rating and above
    */
   const handleDropdownSelection = function () {
+    // create a trigger for the ratings
     $('.js-container').on('change', '#ratings', (event) => {
+    // get the current rating value from the user
         const currentRating = $(event.currentTarget).val();
-        console.log(dropdownSelectionFilter(currentRating));
-        render();
+    // save the current rating into the store
+        store.filter = currentRating;
+        console.log(store);
+    // sent to the dropdownSelectionFilter function
+        dropdownSelectionFilter(currentRating);
     });
   };
   
