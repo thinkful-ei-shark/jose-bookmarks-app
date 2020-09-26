@@ -65,7 +65,7 @@ const generateStartTemplate = function() {
         <h2>Welcome fellow bookmarker!</h2>
         <p class='description'>
             This app will enable you to store your favorite
-            websites and organize by a rating (1 - 5) form
+            websites and organize by a rating (1 - 5) from
             most favorite to "I can't believe I was into this band".
         </p>
         <p>Have fun and happy bookmarking 📚</p>
