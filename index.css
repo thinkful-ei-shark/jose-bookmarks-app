@@ -9,15 +9,11 @@
   }
   
   button, input[type="text"] {
-    padding: 5px;
+   padding: 5px;
   }
   
   button:hover {
     cursor: pointer;
-  }
-  
-  .hidden {
-    display: none;
   }
   
   #bookmark-list-item {
@@ -27,31 +23,33 @@
   .container {
     max-width: 600px;
     margin: 0 auto;
-  }
-  
-  .bookmark-list {
     list-style: none;
     padding-left: 0;
+    background-color: floralwhite;
+
+  }
+
+  .container li .expanded-button {
+    margin-top: 80px;
+  }
+
+  .container .bookmark-item {
+    margin-right: 80px;
+  }
+
+  .container button {
+    margin: 0 0 10px 0;
+
   }
   
-  .bookmark-list > li {
+  .container li {
     margin-bottom: 20px;
     border: 1px solid grey;
     padding: 20px;
-  }
-  
-  .bookmark-item {
-    display: block;
-    color: grey;
-    font-style: italic;
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-  
-  .bookmark-item__checked {
-    text-decoration: line-through;
+    background-color: antiquewhite;
   }
 
   .bookmark-item__collapsed {
       display: none;
+      /* transition-timing-function: ease; */
   }

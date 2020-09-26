@@ -6,9 +6,8 @@ const store = {
     bookmarks: [
         { id: cuid(), title: 'Soccer News', rating: 3, url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', expanded: true, editable: false },
         { id: cuid(), title: 'Meatball Recipe', rating: 5, url: 'https://www.thekitchn.com/how-to-make-meatballs-cooking-lessons-from-the-kitchn-108048', desc: 'Easiest meatball recipe', expanded: true, editable: false },
-        { id: cuid(), title: 'Butthole Surfers - Who Was in My Room Last Night', rating: 4, url: 'https://www.youtube.com/watch?v=CNAkbbKycCM', desc: 'Soccer news from around the world', expanded: true, editable: false }
+        { id: cuid(), title: 'Avocado Oil', rating: 4, url: 'https://www.healthline.com/nutrition/9-avocado-oil-benefits', desc: 'Health Benefits of Avocado Oil', expanded: true, editable: false }
     ],
-    hideExpandedItems: false,
     hideEditOptions: false,
     adding: false,
     error: null,
@@ -48,13 +47,13 @@ const generateStartTemplate = function() {
     let mainNav = `
         <form id='js-bookmark-start' class='bookmark-start'>
             <button type="submit" >New Bookmark +</button>
-            <label for="bookmarks">Sort by:</label>
             <select name="ratings" id="ratings" required>
-                <option value="one">1 Star</option>
-                <option value="two">2 Stars</option>
-                <option value="three">3 Star</option>
-                <option value="four">4 Stars</option>
-                <option value="five">5 Stars</option>
+                <option value="sort-by">Sort by:</option>
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Star</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
             </select>
         </form>`;
 
@@ -71,7 +70,7 @@ const generateStartTemplate = function() {
         </p>
         <p>Have fun and happy bookmarking 📚</p>
         ${mainNav}
-        <ul class="bookmark-list js-bookmark-list"></ul>
+        <ul class="js-bookmark-list"></ul>
     `;
 }
 
@@ -80,15 +79,11 @@ const generateStartTemplate = function() {
   const generateItemElement = function (item) {
     let bookmarkDescription = `
         <div class='js-item-expanded'>
-            <button class='js-visit-site'>Visit site</button>
+            <button class='expand-button js-visit-site'>Visit site</button>
             <p class='desc-title description'>Description:</p>
             <p class='description'>${item.desc}</p>
-            <button class='bookmark-item-edit js-item-edit'>
-                <span class='button-label'>edit entry</span>
-            </button>
-            <button class='bookmark-item-delete js-item-delete'>
-                <span class='button-label'>delete</span>
-            </button>
+            <button class='bookmark-item-edit js-item-edit'>edit entry</button>
+            <button class='bookmark-item-delete js-item-delete'>delete</button>
         </div>
         `;
     if (!item.expanded) {
@@ -99,7 +94,7 @@ const generateStartTemplate = function() {
   
     return `
         <li class='js-item-element' data-item-id='${item.id}'>
-            <span class='bookmark-item'>${item.title}</span>
+            <span class='bookmark-title'>${item.title}</span>
             <span class='bookmark-rating'>Rating: ${item.rating}</span>
             ${bookmarkDescription}
             <div class='bookmark-item-controls'>
@@ -193,11 +188,11 @@ const generateStartTemplate = function() {
     });
   };
 
-  //.:*~*:._.:*~*:._ STEP 3.B. _.:*~*:._.:*~*:.//
+  //.:*~*:._.:*~*:._ STEP 3.C. _.:*~*:._.:*~*:.//
   // This function will find the ID of the current list item
   // and it will alternate its expanded status
 
-  const toggleCheckedForListItem = function (id) {
+  const toggleExpandedListItem = function (id) {
     const foundItem = store.bookmarks.find(item => item.id === id);
     foundItem.expanded = !foundItem.expanded;
   };
@@ -210,11 +205,16 @@ const generateStartTemplate = function() {
   const handleExpandedViewToggle = function () {
     $('.js-container').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
-      toggleCheckedForListItem(id);
+      toggleExpandedListItem(id);
       render();
     });
   };
   
+  //.:*~*:._.:*~*:._ STEP 3.B. _.:*~*:._.:*~*:.//
+
+  // This function will retrieve the ID of the current list item
+  // by traversing to the closest <li> and obtaining its unique ID number
+
   const getItemIdFromElement = function (item) {
     return $(item)
       .closest('.js-item-element')
@@ -222,9 +222,12 @@ const generateStartTemplate = function() {
   };
   
   /**
-   * Responsible for deleting a list item.
+   * Responsible for deleting a bookmark item.
    * @param {string} id 
    */
+
+   //.:*~*:._.:*~*:._ STEP 4.B. _.:*~*:._.:*~*:.//
+
   const deleteListItem = function (id) {
     // As with 'addItemToShoppingLIst', this 
     // function also has the side effect of
@@ -233,17 +236,21 @@ const generateStartTemplate = function() {
     // First we find the index of the item with 
     // the specified id using the native
     // Array.prototype.findIndex() method. 
-    const index = store.items.findIndex(item => item.id === id);
+    const index = store.bookmarks.findIndex(item => item.id === id);
     // Then we call `.splice` at the index of 
     // the list item we want to remove, with 
     // a removeCount of 1.
-    store.items.splice(index, 1);
+    store.bookmarks.splice(index, 1);
   };
   
+  //.:*~*:._.:*~*:._ STEP 4.A. _.:*~*:._.:*~*:.//
+
+  // These functions will enable the user to delete an item from the list
+
   const handleDeleteItemClicked = function () {
-    // Like in `handleItemCheckClicked`, 
+    // Like in `handleExpandedViewToggle`, 
     // we use event delegation.
-    $('.js-shopping-list').on('click', '.js-item-delete', event => {
+    $('.js-container').on('click', '.js-item-delete', event => {
       // Get the index of the item in store.items.
       const id = getItemIdFromElement(event.currentTarget);
       // Delete the item.
@@ -253,21 +260,32 @@ const generateStartTemplate = function() {
     });
   };
   
+
+  //.:*~*:._.:*~*:._ STEP 5.B. _.:*~*:._.:*~*:.//
+
   /**
-   * Toggles the store.hideCheckedItems property
+   * This function returns an array of ratings that are greater
+   * or equal to the rating value on the dropdown menu
    */
-  const toggleCheckedItemsFilter = function () {
-    store.hideCheckedItems = !store.hideCheckedItems;
-  };
+  const dropdownSelectionFilter = function (currentRating) {
+    const ratingGroup = [];
+    store.bookmarks.map(rate => 
+        (rate.rating >= currentRating) ? ratingGroup.push(rate) : null)
+    console.log(ratingGroup);
+  }
+    
   
+   //.:*~*:._.:*~*:._ STEP 5.A. _.:*~*:._.:*~*:.//
+
   /**
-   * Places an event listener on the checkbox 
-   * for hiding completed items.
+   * Places an event listener on dropdown menu
+   * and only displays the items that have a minimum rating and above
    */
-  const handleToggleFilterClick = function () {
-    $('.js-filter-checked').click(() => {
-      toggleCheckedItemsFilter();
-      render();
+  const handleDropdownSelection = function () {
+    $('.js-container').on('change', '#ratings', (event) => {
+        const currentRating = $(event.currentTarget).val();
+        console.log(dropdownSelectionFilter(currentRating));
+        render();
     });
   };
   
@@ -292,9 +310,8 @@ const generateStartTemplate = function() {
     handleOpenBookMarkForm();
     handleNewItemSubmit();
     handleExpandedViewToggle();
-    // handleItemCheckClicked();
     handleDeleteItemClicked();
-    handleToggleFilterClick();
+    handleDropdownSelection();
   };
   
   // when the page loads, call `handleBookmarkList`
