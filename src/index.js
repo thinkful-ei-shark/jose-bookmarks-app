@@ -33,7 +33,7 @@ const newBookmarkEntryForm = function() {
         <label for="bookmark-desc-entry">Description:</label>
         <input type="text" name="bookmark-desc-entry" class="js-bookmark-desc-entry" placeholder="better than momma's" required><br>
         <label for="rating">Rating:</label>
-        <input type="number" name="bookmark-rating-entry" class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5" required><br>
+        <input type="number" name="bookmark-rating-entry" max='5' min='1' class="js-bookmark-rating-entry" placeholder="e.g., 1 - 5" required><br>
         <button type="submit">Add +</button>
     </form>
   `;
