@@ -19,22 +19,6 @@ function main() {
 $(main);
 
 /////////////////////////////////////////////////////////
-//////////////////// STORE DATABASE /////////////////////
-///////////////////////////////////////////////////////// 
-
-const store = {
-    bookmarks: [
-        { id: cuid(), title: 'Soccer News', rating: 3, url: 'https://www.goal.com/en-us', desc: 'Soccer news from around the world', expanded: false },
-        { id: cuid(), title: 'Meatball Recipe', rating: 5, url: 'https://www.thekitchn.com/how-to-make-meatballs-cooking-lessons-from-the-kitchn-108048', desc: 'Easiest meatball recipe', expanded: true },
-        { id: cuid(), title: 'Avocado Oil', rating: 4, url: 'https://www.healthline.com/nutrition/9-avocado-oil-benefits', desc: 'Health Benefits of Avocado Oil', expanded: true }
-    ],
-    hideEditOptions: false,
-    adding: false,
-    error: null,
-    filter: 0
-};
-
-/////////////////////////////////////////////////////////
 //////////////////// RENDER FUNCTIONS ///////////////////
 ///////////////////////////////////////////////////////// 
 
