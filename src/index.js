@@ -1,10 +1,10 @@
 //saveBookmark function:This function will check whether there are any existing bookmarks. If there are
 //imports always at top
-import $, { data } from "jquery";
+import $, { data } from "../node_modules/jquery";
 import css from './index.css';
 import api from "./api";
-import store from "./store";
-import bookmarkapp from "./bookmarkapp";
+import store from './store';
+import bookmarkapp from "./bookmarkapp.js";
 
 //Main function to call all functions and generate to DOM
 function main() {
@@ -14,6 +14,7 @@ function main() {
   });
   bookmarkapp.render();
   bookmarkapp.bindEvenListeners();
+
 };
 
 $(main);
