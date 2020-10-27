@@ -1,7 +1,5 @@
-[https://thinkful-ei-shark.github.io/jose-bookmarks-app/]
-
 # jose-bookmarks-app
-https://thinkful-ei-shark.github.io/jose-bookmarks-app/
+https://thinkful-ei-shark.github.io/jose-bookmarks-app/dist
 
 ## User Stories
 ### As a user:
