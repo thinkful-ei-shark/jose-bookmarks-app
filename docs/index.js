@@ -4,7 +4,7 @@ import $, { data } from "jquery";
 import css from './index.css';
 import api from "./api";
 import store from './store';
-import bookmarkapp from "./bookmarkapp.js";
+import bookmarkapp from "./bookmarkapp";
 
 //Main function to call all functions and generate to DOM
 function main() {
