@@ -10,46 +10,50 @@ const generateHtmlString = function () {
   return `<header>
     <label for="heading"></label>
     <div id="main" class="container">
-    
-        <h2>Favorite Bookmarks!</h2>
+      <h2>Favorite Bookmarks!</h2>
         <form id="bookmark-container">
-        <fieldset>
-        <p>${store.error?store.error:""}</p>
-        <label for="bookmark-input">Bookmark Name:<br></label>
-        <input id="bookmark-input" type="text" placeholder="Bookmark Name">
-        <div id="url-container">
-        <label for="address-input">Bookmark Webpage:<br></label>
-        <input id="address-input" type="text" placeholder="Enter Web address">
-        <label for="description-input"><br>Describe your bookmark:</br>
-        <input id="description-input" type="text" placeholder="Enter Notes" value="">
-        <label for="rating-btn"><br>Rating:<br></label>
-        
-        <input type="radio" name="rate" id="rate-1" value="1" >1
-        <label for="rate-5" class="rate-btn"></label>
-        <input type="radio" name="rate" id="rate-2" value="2">2
-        <label for="rate-5" class="rate-btn"></label>
-        <input type="radio" name="rate" id="rate-3" value="3">3
-        <label for="rate-5" class="rate-btn"></label>
-        <input type="radio" name="rate" id="rate-4" value="4">4
-        <label for="rate-5" class="rate-btn"></label>
-        <input type="radio" name="rate" id="rate-5" value="5" checked="checked">5
-        <label for="rate-5" class="rate-btn"></label>
-        <br>
-        <input id="add" type="submit" value="Add">
-       <!--Dropdown rating button  -->
-        <label for="radio-btn"></label>
-        <select name="rating">
-          <option value = "">Select By Rate</option>
-          <option value ="1">1</option>
-          <option value ="2">2</option>
-          <option value ="3">3</option>
-          <option value ="4">4</option>
-          <option value ="5">5</option>
+          <fieldset>
+          <p>${store.error?store.error:""}</p>
+          <div id="name-container">  
+            <label for="bookmark-input">Bookmark Name:<br></label>
+            <input id="bookmark-input" type="text" placeholder="Bookmark Name">
           </div>
+          <div id="url-container">
+            <label for="address-input">Bookmark Webpage:<br></label>
+            <input id="address-input" type="text" placeholder="Enter Web address">
+          </div>
+          <div id="desc-container">
+            <label for="description-input"><br>Describe your bookmark:</br>
+            <input id="description-input" type="text" placeholder="Enter Notes" value="">
+          </div>
+          <div id="rating-container">
+            <label for="rating-btn"><br>Rating:<br></label>
+            <input type="radio" name="rate" id="rate-1" value="1" >1
+            <label for="rate-5" class="rate-btn"></label>
+            <input type="radio" name="rate" id="rate-2" value="2">2
+            <label for="rate-5" class="rate-btn"></label>
+            <input type="radio" name="rate" id="rate-3" value="3">3
+            <label for="rate-5" class="rate-btn"></label>
+            <input type="radio" name="rate" id="rate-4" value="4">4
+            <label for="rate-5" class="rate-btn"></label>
+            <input type="radio" name="rate" id="rate-5" value="5" checked="checked">5
+            <label for="rate-5" class="rate-btn"></label>
+            <br>
+          </div>
+            <input id="add" type="submit" value="Add">
+       
+       <!--Dropdown rating button  -->
+          <label for="radio-btn"></label>
+          <select name="rating">
+            <option value = "">Select By Rate</option>
+            <option value ="1">1</option>
+            <option value ="2">2</option>
+            <option value ="3">3</option>
+            <option value ="4">4</option>
+            <option value ="5">5</option>
+          </select>
+          </fieldset>
         </form>
-
-        </select>
-      </fieldset>
         <br>
     </div>`;
 };
